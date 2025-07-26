@@ -1,0 +1,9 @@
+[submodule "flanterm"]
+	path = flanterm
+	url = https://codeberg.org/mintsuki/flanterm/
+[submodule "kernel/flanterm"]
+	path = kernel/flanterm
+	url = https://codeberg.org/mintsuki/flanterm/
+[submodule "kernel/src/flanterm"]
+	path = kernel/src/flanterm
+	url = https://codeberg.org/mintsuki/flanterm/
