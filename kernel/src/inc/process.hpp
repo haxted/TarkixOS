@@ -11,7 +11,7 @@ struct __attribute__((packed)) message {
 
 
 struct __attribute__((packed)) cpuState {
-  std::uint64_t r15, r14, r13, r12, r11, r10, r9, r8, rsi, rdi, rbp, rdx, rcx, rbx, rax, rip, cs, rflags, rsp, ss, cr3;  
+  std::uint64_t r15, r14, r13, r12, r11, r10, r9, r8, rsi, rdi, rbp, rdx, rcx, rbx, rax, rip, cs, rflags, rsp, ss;  
 };
 
 struct __attribute__((packed)) messageQueue {
@@ -28,14 +28,15 @@ typedef enum {
     S_ZOMBIE
 } taskState;
 
+
 struct __attribute__((packed)) process {
     pid_t pid;
     pid_t ppid;
 
     uid_t uid;
     gid_t gid;
-    cpuState* regs;
-    int taskState;
+
+    taskState state;
     int exitCode;
 
     process* children;
