@@ -35,6 +35,7 @@ run-x86_64: ovmf/ovmf-code-$(ARCH).fd $(IMAGE_NAME).iso
 		-M q35 \
 		-drive if=pflash,unit=0,format=raw,file=ovmf/ovmf-code-$(ARCH).fd,readonly=on \
 		-cdrom $(IMAGE_NAME).iso \
+
 		$(QEMUFLAGS)
 
 .PHONY: run-hdd-x86_64

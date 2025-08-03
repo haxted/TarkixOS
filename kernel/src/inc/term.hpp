@@ -19,4 +19,7 @@
 namespace kernel::term {
     void kout(const char* str);
     void koutHex64(std::uint64_t val);
+    void printf(const char* fmt, ...);
+    void koutDec64(std::uint64_t val);
+    void koutChar(char c);
 };

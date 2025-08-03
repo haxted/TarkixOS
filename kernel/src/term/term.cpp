@@ -19,4 +19,10 @@ namespace kernel::term {
         buf[16] = '\0';
         kout(buf);
     }
+    void koutChar(char c) {
+        char chars[2];
+        chars[0] = c;
+        chars[1] = '\0';
+        kout(chars);
+    }
 };
