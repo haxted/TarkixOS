@@ -1,12 +1,12 @@
-#include "../inc/term.hpp"
-#include <cstdarg>
-#include <cstdint>
-#define prints(str)     kernel::term::kout(str); /* Your string-printing function... */
-#define printhex(hex)   kernel::term::koutHex64(hex); /* Your hex-printing function... */
+#include "../inc/term.h"
+#include <stdarg.h>
+#include <stdint.h>
+#define prints(str)     kout(str); /* Your string-printing function... */
+#define printhex(hex)   koutHex64(hex); /* Your hex-printing function... */
 #define printdec(dec)   /* Your decimal-printing function... */
-#define printchar(chara) kernel::term::koutChar(chara); /* Your character-printing function... */
+#define printchar(chara) koutChar(chara); /* Your character-printing function... */
 
-namespace kernel::term {
+
 
 void printf(const char *fmt, ...) {
   va_list p;
@@ -17,6 +17,8 @@ void printf(const char *fmt, ...) {
       switch (*fmt) {
       case 'd': {
         int x = va_arg(p, int);
+        x = x + 1;
+        x--;
         printdec(x);
         fmt++;
         break;
@@ -28,7 +30,7 @@ void printf(const char *fmt, ...) {
         break;
       }
       case 'x': {
-        int x = va_arg(p, std::uint64_t);
+        uint64_t x = va_arg(p, uint64_t);
         printhex(x);
         fmt++;
         break;
@@ -53,4 +55,4 @@ void printf(const char *fmt, ...) {
   }
   va_end(p);
 }
-} // namespace kernel::term
+

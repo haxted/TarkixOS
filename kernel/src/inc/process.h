@@ -1,21 +1,22 @@
 #pragma once
-#include <cstdint>
+#include <stdint.h>
+#include <stddef.h>
 #include "sys/types.h"
 
 struct __attribute__((packed)) message {
     pid_t from;
-    std::size_t len;
+    size_t len;
     char msg[256];
 };
 
 
 
 struct __attribute__((packed)) cpuState {
-  std::uint64_t r15, r14, r13, r12, r11, r10, r9, r8, rsi, rdi, rbp, rdx, rcx, rbx, rax, rip, cs, rflags, rsp, ss;  
+  uint64_t r15, r14, r13, r12, r11, r10, r9, r8, rsi, rdi, rbp, rdx, rcx, rbx, rax, rip, cs, rflags, rsp, ss, cr3;  
 };
 
 struct __attribute__((packed)) messageQueue {
-    message messages[128];
+    struct message messages[128];
     int head;
     int tail;
     int count;
@@ -39,12 +40,13 @@ struct __attribute__((packed)) process {
     taskState state;
     int exitCode;
 
-    process* children;
-    process* siblings;
+    struct cpuState* regs;
+    struct process* children;
+    struct process* siblings;
      
-    messageQueue msgs;
+    struct messageQueue msgs;
 
     
 
-    process* nextProcess;
+    struct process* nextProcess;
 };

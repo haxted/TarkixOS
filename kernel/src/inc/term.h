@@ -1,7 +1,7 @@
 #include "../flanterm/src/flanterm.h"
 #include "../flanterm/src/flanterm_backends/fb.h"
-#include "string.hpp"
-#include <cstdint>
+#include "string.h"
+#include <stdint.h>
 #define ANSIFBLACK "\x1b[30m"
 #define ANSIFRED "\x1b[31m"
 #define ANSIFGREEN "\x1b[32m"
@@ -16,10 +16,10 @@
 #define MSGFAIL ANSIFRED "[ FAIL ]" ANSIFBLACK
 #define MSGOK ANSIFGREEN "[ OK ]" ANSIFBLACK
 
-namespace kernel::term {
-    void kout(const char* str);
-    void koutHex64(std::uint64_t val);
-    void printf(const char* fmt, ...);
-    void koutDec64(std::uint64_t val);
-    void koutChar(char c);
-};
+
+void kout(const char* str);
+void koutHex64(uint64_t val);
+void printf(const char* fmt, ...);
+void koutDec64(int64_t val);
+void koutChar(char c);
+
