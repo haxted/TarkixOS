@@ -22,6 +22,6 @@ void initGdt() {
     gdtPtr.size = sizeof(gdtTable) - 1;
     gdtPtr.offset = (uint64_t)&gdtTable;
     loadGdt(&gdtPtr);
-    printf(MSGOK " Loaded GDT\n");
+    debug("Loaded GDT\n");
 }
 

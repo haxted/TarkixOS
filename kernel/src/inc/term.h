@@ -20,6 +20,8 @@
 void kout(const char* str);
 void koutHex64(uint64_t val);
 void printf(const char* fmt, ...);
-void koutDec64(int64_t val);
+void koutDec(int val);
 void koutChar(char c);
+
+#define debug(s) printf(MSGINFO " %s:%d: %s", __FILE__, __LINE__, s);
 

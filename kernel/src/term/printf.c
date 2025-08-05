@@ -3,7 +3,7 @@
 #include <stdint.h>
 #define prints(str)     kout(str); /* Your string-printing function... */
 #define printhex(hex)   koutHex64(hex); /* Your hex-printing function... */
-#define printdec(dec)   /* Your decimal-printing function... */
+#define printdec(dec)   koutDec(dec) /* Your decimal-printing function... */
 #define printchar(chara) koutChar(chara); /* Your character-printing function... */
 
 

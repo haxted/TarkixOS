@@ -84,8 +84,8 @@ void hcf() {
 
 
 
-void panic(const char* reason) {
-    printf(MSGFAIL " Kernel panic! Reason: %s\n Regdump: \n", reason);
+void _panic(const char* reason, int line, const char* file) {
+    printf(MSGFAIL" %s.%d: Kernel panic! Reason: %s\n Regdump: \n", file, line, reason);
     uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp, r8, r9, r10, r11, r12, r13, r14, r15, cr2, rip;
     __asm__ volatile(
         "mov %%rax, %0\n\t"
@@ -166,7 +166,7 @@ void panic(const char* reason) {
         0
     );
     printf("\x1b[47m\x1b[30m\x1b[2J\x1b[H");
-    printf("\x1b[34mWelcome to Tarkix, version 0.2.1\n\x1b[31mCopyright (C) 2025 haxted.\n\x1b[30mStill In Development Bozos\n");
+    printf("\x1b[34mWelcome to Tarkix, version 0.3.0\n\x1b[31mCopyright (C) 2025 haxted.\n\x1b[30mStill In Development Bozos\n");
     initGdt();
   
     // for(std::uint64_t i = 0; i < framebuffer->width*framebuffer->height*framebuffer->bpp; i++) {
@@ -175,17 +175,18 @@ void panic(const char* reason) {
     initIdt();
     
     struct limine_memmap_response* memmapResponse = memmapRequest.response;
-    printf(MSGOK " Got memory map from bootloader\n");
+    debug("Got memory map from bootloader.\n");
     initPmm(memmapResponse, hhdmOff);
-    void* stackTop;
+    void* stackTop = pmmAlloc();
 
     void* p = pmmAlloc();
     void* p2 = pmmAlloc();
     pmmFree(p2);
     pmmFree(p);
     createThread(kmain, 0, stackTop);
+    pmmFree(stackTop);
     panic("Test!");
-    printf(MSGINFO" We are about to crash the system. Please be prepared.\n");
+    debug("We are about to crash the system. Please be prepared.\n");
     __asm__ volatile(
         "xor %rax, %rax\n\t"
         "div %rax\n\t"

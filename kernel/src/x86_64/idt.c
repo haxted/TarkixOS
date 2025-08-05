@@ -32,7 +32,7 @@ void initIdt() {
         :
     : "m"(idtr)
         );
-    printf(MSGOK" Initialized IDT\n");
+    debug("Initialized IDT\n");
 }
 
 
@@ -43,13 +43,17 @@ void exceptionHandle(uint64_t intno, uint64_t errcode, uint64_t rip, uint64_t cs
     (void)intno;
     switch (intno) {
     case UNDEFINEDOPCODE: {
-        printf(MSGFAIL" Invalid opcode exception\nHalting system..");
-        __asm__ volatile("cli; hlt");
+        if(cs == 0x08) {
+            debug("Invalid opcode exception\nHalting system..");
+            __asm__ volatile("cli; hlt");
+        }
         break;
     }
     case DIVBYZERO: {
-        printf(MSGFAIL" Division by zero error\nHalting system..");
-        __asm__ volatile("cli; hlt");
+        if(cs == 0x08) {
+            debug(" Division by zero error\nHalting system..");
+            __asm__ volatile("cli; hlt");
+        }
     }
     case PAGEFAULT: {
         uint64_t cr2;
@@ -57,8 +61,11 @@ void exceptionHandle(uint64_t intno, uint64_t errcode, uint64_t rip, uint64_t cs
             "mov %%cr2, %0\n\t"
             : "=r"(cr2)
             );
-        printf("[%s] -- Page fault --\n faultingRIP: %x\n", __func__, rip);
-        panic("exceptions: Page fault");
+        if(cs == 0x08) {
+            debug(" -- Page fault exception -- ");
+            printf("Error code: %x\n", errcode);
+            panic("exceptions: Page fault");
+        }
     }
     }
 }

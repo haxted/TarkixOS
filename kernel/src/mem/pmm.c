@@ -21,14 +21,15 @@ void initPmm(struct limine_memmap_response* memmap, uint64_t hhdmOff) {
       }
     }
   }
-    printf(MSGOK " Initialized Physical Memory Manager \n");
+    debug("Initialized Physical mem manager\n");
 }
 void* pmmAlloc() {
   if(!blockHead) return NULL;
   struct pmmFreeBlock* block = (struct pmmFreeBlock*)((uintptr_t)blockHead + hhdmOffset);
   void* addr = blockHead;
   blockHead = block->next;
-  printf(MSGINFO " Allocated 4096 bytes at 0x%x\n", (uint64_t)addr);
+  debug("");
+  printf("Allocated 4096 bytes at 0x%x\n", (uint64_t)addr);
   return addr;
 }
 void pmmFree(void* ptr) {
@@ -36,6 +37,7 @@ void pmmFree(void* ptr) {
   struct pmmFreeBlock* block = (struct pmmFreeBlock*)((uintptr_t)ptr + hhdmOffset);
   block->next = blockHead;
   blockHead = (struct pmmFreeBlock*)ptr;
-  printf(MSGINFO " Freed memory at 0x%x\n", (uint64_t)block);
+  debug("");
+  printf("Freed memory at 0x%x\n", (uint64_t)block);
 }
 

@@ -26,3 +26,19 @@ void koutChar(char c) {
     kout(chars);
 }
 
+void koutDec(int val) {
+    char* str;
+    if(val < 0) {
+        koutChar('-');
+        val = -val;
+    }
+    if(val == 0) {
+        koutChar('0');
+        return;
+    }
+    int whatever = val / 10;
+    if(whatever != 0) {
+        koutDec(whatever);
+    }
+    koutChar('0' + (val % 10));
+}
