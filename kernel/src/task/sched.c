@@ -29,7 +29,7 @@
     currentProcess = p;
     currentProcess->siblings = p->nextProcess;
     debug("");
-    printf(" Created process with PID %x\n", (uint64_t)p->pid);
+    printf(" Created process with PID %d\n", p->pid);
     
     return p;
   }
