@@ -97,7 +97,7 @@ void _panic(const char* reason, int line, const char* file) {
         "mov %%rbp, %6\n\t"
         : "=r"(rax), "=r"(rbx), "=r"(rcx), "=r"(rdx), "=r"(rsi), "=r"(rdi), "=r"(rbp)
         );
-    printf("RAX: %x RBX: %x RCX: %x\nRDX: %x RSI: %x RDI: %x\n RBP: %x ", rax, rbx, rcx, rdx, rsi, rdi, rbp);
+    printf("RAX: %x RBX: %x RCX: %x\nRDX: %x RSI: %x RDI: %x\nRBP: %x ", rax, rbx, rcx, rdx, rsi, rdi, rbp);
 
     __asm__ volatile(
         "mov %%r8, %0\n\t"
@@ -118,7 +118,7 @@ void _panic(const char* reason, int line, const char* file) {
         "mov %%r15, %0\n\t"
         : "=m"(r15)
         );
-    printf("R8: %x R9: %x\n R10: %x R11: %x R12: %x\nR13: %x R14: %x R15: %x\n CR2: %x RIP: %x\n", r8, r9, r10, r11, r12, r13, r14, r15, cr2, rip);
+    printf("R8: %x R9: %x\nR10: %x R11: %x R12: %x\nR13: %x R14: %x R15: %x\nCR2: %x RIP: %x\n", r8, r9, r10, r11, r12, r13, r14, r15, cr2, rip);
     hcf();
 }
 
