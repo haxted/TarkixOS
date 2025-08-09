@@ -51,8 +51,10 @@ void exceptionHandle(uint64_t intno, uint64_t errcode, uint64_t rip, uint64_t cs
     }
     case DIVBYZERO: {
         if(cs == 0x08) {
-            debug(" Division by zero error\nHalting system..");
-            __asm__ volatile("cli; hlt");
+            debug(" -- Division by zero exception --\n");
+            printf("RIPdiv: %x", rip);
+            panic("exceptions: Division by zero");
+
         }
     }
     case PAGEFAULT: {

@@ -10,6 +10,7 @@
 #include "inc/idt.h"
 #include "inc/pmm.h"
 #include "inc/sched.h"
+#include "inc/vmm.h"
 // Set the base revision to 3, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
 // See specification for further info.
@@ -178,7 +179,9 @@ void _panic(const char* reason, int line, const char* file) {
     debug("Got memory map from bootloader.\n");
     initPmm(memmapResponse, hhdmOff);
     void* stackTop = pmmAlloc();
-
+    mapPage((uint64_t)initIdt, 0x7ffffffff, PRESENT | RW | US);
+    printf("Better not fault\n");
+    int i = *(int*)0x8000;
     void* p = pmmAlloc();
     void* p2 = pmmAlloc();
     pmmFree(p2);
@@ -186,10 +189,4 @@ void _panic(const char* reason, int line, const char* file) {
     createThread(kmain, 0, stackTop);
     pmmFree(stackTop);
     panic("Test!");
-    debug("We are about to crash the system. Please be prepared.\n");
-    __asm__ volatile(
-        "xor %rax, %rax\n\t"
-        "div %rax\n\t"
-    );
-    hcf();
 }

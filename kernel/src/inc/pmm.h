@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 #include "term.h"
 #include "../limine.h"
