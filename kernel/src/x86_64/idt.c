@@ -52,7 +52,7 @@ void exceptionHandle(uint64_t intno, uint64_t errcode, uint64_t rip, uint64_t cs
     case DIVBYZERO: {
         if(cs == 0x08) {
             debug(" -- Division by zero exception --\n");
-            printf("RIPdiv: %x", rip);
+            printf("RIPdiv: %x\n", rip);
             panic("exceptions: Division by zero");
 
         }
@@ -67,6 +67,13 @@ void exceptionHandle(uint64_t intno, uint64_t errcode, uint64_t rip, uint64_t cs
             debug(" -- Page fault exception -- ");
             printf("Error code: %x\n", errcode);
             panic("exceptions: Page fault");
+        }
+    case GENERALPROTFAULT: {
+            if(cs == 0x08) {
+                debug(" -- #GP exception -- \n");
+                printf("Error code: %x\nCS: %x\nRIP: %x\n", errcode, cs, rip);
+                panic("exceptions: #GP")
+            }
         }
     }
     }

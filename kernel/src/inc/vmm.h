@@ -18,4 +18,5 @@
 #define GET_PT(addr) (addr >> 12) & 0x1FF
 #define GET_OFF(addr) (addr & 0xFFF)
 
-void mapPage(uint64_t addr, uint64_t phys, uint32_t flags);
+void mapPage(void* pageMap, uint64_t addr, uint64_t phys, uint32_t flags);
+uint64_t virtToPhys(uint64_t virt);

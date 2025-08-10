@@ -86,6 +86,7 @@ void hcf() {
 
 
 void _panic(const char* reason, int line, const char* file) {
+    uint64_t returnAddr;
     printf(MSGFAIL" %s.%d: Kernel panic! Reason: %s\n Regdump: \n", file, line, reason);
     uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp, r8, r9, r10, r11, r12, r13, r14, r15, cr2, rip;
     __asm__ volatile(
@@ -119,7 +120,12 @@ void _panic(const char* reason, int line, const char* file) {
         "mov %%r15, %0\n\t"
         : "=m"(r15)
         );
+    __asm__ volatile(
+    "pop %0\n\t"
+    : "=r"(returnAddr)
+    );
     printf("R8: %x R9: %x\nR10: %x R11: %x R12: %x\nR13: %x R14: %x R15: %x\nCR2: %x RIP: %x\n", r8, r9, r10, r11, r12, r13, r14, r15, cr2, rip);
+    printf("%s return addr at %x", __func__, returnAddr);
     hcf();
 }
 
@@ -167,7 +173,7 @@ void _panic(const char* reason, int line, const char* file) {
         0
     );
     printf("\x1b[47m\x1b[30m\x1b[2J\x1b[H");
-    printf("\x1b[34mWelcome to Tarkix, version 0.3.0\n\x1b[31mCopyright (C) 2025 haxted.\n\x1b[30mStill In Development Bozos\n");
+    printf("\x1b[34mWelcome to Tarkix, version 0.3.0\n\x1b[31mCopyright (C) 2025 haxted.\n\x1b[30mStill In Development Bozos\nBuilt on %s %s\n", __DATE__, __TIME__);
     initGdt();
   
     // for(std::uint64_t i = 0; i < framebuffer->width*framebuffer->height*framebuffer->bpp; i++) {
@@ -178,15 +184,17 @@ void _panic(const char* reason, int line, const char* file) {
     struct limine_memmap_response* memmapResponse = memmapRequest.response;
     debug("Got memory map from bootloader.\n");
     initPmm(memmapResponse, hhdmOff);
+    /*
     void* stackTop = pmmAlloc();
-    mapPage((uint64_t)initIdt, 0x7ffffffff, PRESENT | RW | US);
-    printf("Better not fault\n");
-    int i = *(int*)0x8000;
+    void* pageMap = pmmAlloc() + hhdmOff;
     void* p = pmmAlloc();
     void* p2 = pmmAlloc();
+    mapPage(pageMap, 0x1000, 0x1000, PRESENT | RW);
     pmmFree(p2);
     pmmFree(p);
     createThread(kmain, 0, stackTop);
     pmmFree(stackTop);
+    pmmFree(pageMap - hhdmOff);
+    */
     panic("Test!");
 }
