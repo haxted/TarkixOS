@@ -86,7 +86,7 @@ void hcf() {
 
 
 void _panic(const char* reason, int line, const char* file) {
-    uint64_t returnAddr;
+    uint64_t returnAddr = (uint64_t)__builtin_return_address(0);
     printf(MSGFAIL" %s.%d: Kernel panic! Reason: %s\n Regdump: \n", file, line, reason);
     uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp, r8, r9, r10, r11, r12, r13, r14, r15, cr2, rip;
     __asm__ volatile(
@@ -120,12 +120,8 @@ void _panic(const char* reason, int line, const char* file) {
         "mov %%r15, %0\n\t"
         : "=m"(r15)
         );
-    __asm__ volatile(
-    "pop %0\n\t"
-    : "=r"(returnAddr)
-    );
     printf("R8: %x R9: %x\nR10: %x R11: %x R12: %x\nR13: %x R14: %x R15: %x\nCR2: %x RIP: %x\n", r8, r9, r10, r11, r12, r13, r14, r15, cr2, rip);
-    printf("%s return addr at %x", __func__, returnAddr);
+    printf("%s return addr at %x, ??+??\n", __func__, returnAddr);
     hcf();
 }
 
