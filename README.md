@@ -1,2 +1,2 @@
 # TarkixOS
-This is a hobby operating system written in C.
+MIGRATED TO CODEBERG: https://codeberg.org/HaxTed/TarkixOS
